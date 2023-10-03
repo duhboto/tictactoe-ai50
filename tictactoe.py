@@ -18,23 +18,15 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY]]
 
 
-def player(board):
+def get_next_player(board):
     """
     Returns player who has the next turn on a board.
     """
-    x_moves = 0
-    o_moves = 0
-    for row in board:
-        for col in row:
-            if col == X:
-                x_moves += 1
-            elif col == O:
-                o_moves += 1
-    #Assuming X always goes first
-    if x_moves > o_moves:
-        return O
-    elif x_moves == o_moves:
-        return X       
+    move_count = sum(cell == 'X' or cell == 'O' for row in board for cell in row)
+  
+    #(Assuming X always goes first). If move count is even, it is X's turn. If odd, it's O's turn.
+    return 'X' if move_count % 2 == 0 else 'O'
+ 
  
 
 
