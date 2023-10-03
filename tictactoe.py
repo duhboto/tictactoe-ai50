@@ -34,12 +34,8 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    legal_moves = set()
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == EMPTY:
-                legal_moves.add((i,j))
-    return legal_moves
+    return {(i, j) for i in range(3) for j in range(3) if board[i][j] == EMPTY}
+
 
 
 def result(board, action):
