@@ -37,26 +37,46 @@ def actions(board):
     return {(i, j) for i in range(3) for j in range(3) if board[i][j] == EMPTY}
 
 
-
 def result(board, action):
     """
-    Returns the board that results from making move (i, j) on the board.
+    Returns the board that results from making a move, action, on the board.
     """
-    raise NotImplementedError
+    i, j = action
+    player = get_next_player(board)
+    if board[i][j] == EMPTY:
+        new_board = create_new_board(board)
+        new_board[i][j] = player
+        return new_board
+    else:
+        raise Exception("Invalid action.")
+
 
 
 def winner(board):
-    """
-    Returns the winner of the game, if there is one.
-    """
-    raise NotImplementedError
+    lines = [
+        [board[i][0] for i in range(3)],  # cols
+        [board[i][1] for i in range(3)],  # cols
+        [board[i][2] for i in range(3)],  # cols
+        board[0],  # rows
+        board[1],  # rows
+        board[2],  # rows
+        [board[i][i] for i in range(3)],  # main diagonal
+        [board[i][2 - i] for i in range(3)]  # antisec diagonal
+    ]
+    if [X, X, X] in lines:
+        return X
+    elif [O, O, O] in lines:
+        return O
+    return None
+
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    return winner(board) is not None or not any(EMPTY in row for row in board)
+
 
 
 def utility(board):
