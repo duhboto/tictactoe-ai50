@@ -25,8 +25,23 @@ def player(board):
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
+    Prioritize center, then corners, then edges.
     """
-    return [(i, j) for i in range(3) for j in range(3) if board[i][j] == EMPTY]
+    # Center
+    if board[1][1] == EMPTY:
+        yield (1, 1)
+
+    # Corners
+    corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
+    for corner in corners:
+        if board[corner[0]][corner[1]] == EMPTY:
+            yield corner
+
+    # Edges
+    edges = [(0, 1), (1, 0), (1, 2), (2, 1)]
+    for edge in edges:
+        if board[edge[0]][edge[1]] == EMPTY:
+            yield edge
 
 def result(board, action):
     """
@@ -61,14 +76,11 @@ def winner(board):
     else:
         return None
 
-
-
-
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    return winner(board) is not None or EMPTY not in sum(board, [])
+    return winner(board) is not None or not any(cell == EMPTY for row in board for cell in row)
 
 
 
