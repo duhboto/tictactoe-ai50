@@ -9,6 +9,9 @@ def initial_state():
     """
     Returns starting state of the board.
     """
+    global CURRENT_STARTING_PLAYER
+    # Toggle the starting player for the next game
+    CURRENT_STARTING_PLAYER = O if CURRENT_STARTING_PLAYER == X else X
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
@@ -20,7 +23,10 @@ def player(board):
     x_turns = sum([row.count(X) for row in board])
     o_turns = sum([row.count(O) for row in board])
 
-    return X if x_turns <= o_turns else O
+    if CURRENT_STARTING_PLAYER == X:
+        return X if x_turns == o_turns else O
+    else:
+        return O if o_turns == x_turns else X
 
 def actions(board):
     """
